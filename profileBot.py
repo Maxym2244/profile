@@ -15,24 +15,20 @@ def start_message(message):
 
 def get_name(message):
 	global name
-	# global status
-	
+
 	name = message.text
-	
 	keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
 	keyboard.row('Мужской', 'Женский')
 	
-	bot.send_message(message.from_user.id, 'Выберите пол', reply_markup=keyboard)
+	bot.send_message(message.from_chat.id, 'Выберите пол', reply_markup=keyboard)
 	bot.register_next_step_handler(message, get_sex)
 
 def get_sex(message):
 	global sex
 	
 	sex = message.text
-	# keyboard = telebot.types.ReplyKeyboardRemove()
 
-	
-	bot.send_message(message.from_user.id, "Укажите возраст", reply_markup=telebot.types.ReplyKeyboardRemove())
+	bot.send_message(message.from_chat.id, "Укажите возраст", reply_markup=telebot.types.ReplyKeyboardRemove())
 	bot.register_next_step_handler(message, get_age)
 
 def get_age(message):
@@ -44,14 +40,14 @@ def get_age(message):
 	try:
 		age = int(message.text)
 	except Exception:
-		bot.send_message(message.from_user.id, 'Некоректное значение, попробуйте ещё раз')
+		bot.send_message(message.from_chat.id, 'Некоректное значение, попробуйте ещё раз')
 		return bot.register_next_step_handler(message, get_age)
 	
 	keyboard1 = telebot.types.ReplyKeyboardMarkup(True, True)
 	keyboard1.row('Изменить имя', 'Изменить пол')
 	keyboard1.row('Изменить возраст')
 	
-	bot.send_message(message.from_user.id, u'Ваше имя: {}\nПол: {} \nВозраст: {}'
+	bot.send_message(message.from_chat.id, u'Ваше имя: {}\nПол: {} \nВозраст: {}'
 		.format(name, sex, age), reply_markup=keyboard1)
 	bot.register_next_step_handler(message, get_menu)
 
@@ -62,23 +58,22 @@ def get_menu(message):
 	global status
 	
 	status = True
-	# keyboard1 = telebot.types.ReplyKeyboardRemove()
 	choiceToChange = message.text
 	output = u'Вы выбрали "{}", введите новое значение'.format(choiceToChange)
 	
 	if choiceToChange == u'Изменить пол':
 		keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
 		keyboard.row('Мужской', 'Женский')
-		bot.send_message(message.from_user.id, output, reply_markup=keyboard)
+		bot.send_message(message.from_chat.id, output, reply_markup=keyboard)
 		bot.register_next_step_handler(message, get_choice)
 	elif choiceToChange == u'Изменить имя' :
-		bot.send_message(message.from_user.id, output, reply_markup=telebot.types.ReplyKeyboardRemove())
+		bot.send_message(message.from_chat.id, output, reply_markup=telebot.types.ReplyKeyboardRemove())
 		bot.register_next_step_handler(message, get_choice)
 	elif choiceToChange == u'Изменить возраст' :
-		bot.send_message(message.from_user.id, output, reply_markup=telebot.types.ReplyKeyboardRemove())
+		bot.send_message(message.from_chat.id, output, reply_markup=telebot.types.ReplyKeyboardRemove())
 		bot.register_next_step_handler(message, get_choice)
 	else :
-		bot.send_message(message.from_user.id, 'Выберите с меню', reply_markup=keyboard1)
+		bot.send_message(message.from_chat.id, 'Выберите с меню', reply_markup=keyboard1)
 		bot.register_next_step_handler(message, get_menu)
 
 
@@ -96,21 +91,16 @@ def get_choice(message):
 				if age != int(message.text):
 					age = int(message.text)
 				else:
-					bot.send_message(message.from_user.id, 'Не повторять!')
+					bot.send_message(message.from_chat.id, 'Не повторять!')
 					return bot.register_next_step_handler(message, get_choice)
 			except Exception:
-				bot.send_message(message.from_user.id, "Некоректное значение, попробуйте ещё раз")
+				bot.send_message(message.from_chat.id, "Некоректное значение, попробуйте ещё раз")
 				return bot.register_next_step_handler(message, get_choice)
-		# if age == int(message.text) :
-		# 	bot.send_message(message.from_user.id, "Этот возраст вы уже вводили")
-		# 	bot.register_next_step_handler(message, get_choice)
-		# else :
-		# 	age = message.text
 	
 	keyboard2 = telebot.types.ReplyKeyboardMarkup(True, True)
 	keyboard2.row('Можно в меню?')
 	
-	bot.send_message(message.from_user.id, u'Ваше имя: {} \nпол: {} \nвозраст: {}'
+	bot.send_message(message.from_chat.id, u'Ваше имя: {} \nпол: {} \nвозраст: {}'
 		.format(name, sex, age), reply_markup=keyboard2)
 	bot.register_next_step_handler(message, get_infinity)
 
@@ -119,7 +109,7 @@ def get_infinity(message):
 	keyboard1.row('Изменить имя', 'Изменить пол')
 	keyboard1.row('Изменить возраст')
 	
-	bot.send_message(message.from_user.id, 'да, пожалуйста', reply_markup=keyboard1)
+	bot.send_message(message.from_chat.id, 'да, пожалуйста', reply_markup=keyboard1)
 	bot.register_next_step_handler(message, get_menu)
 
 bot.polling(none_stop=True, interval=0)
