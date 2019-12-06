@@ -51,7 +51,8 @@ def get_age(message):
 	keyboard1.row('Изменить имя', 'Изменить пол')
 	keyboard1.row('Изменить возраст')
 	
-	bot.send_message(message.from_user.id, u'Ваше имя: {}\nПол: {} \nВозраст: {}'.format(name, sex, age), reply_markup=keyboard1)
+	bot.send_message(message.from_user.id, u'Ваше имя: {}\nПол: {} \nВозраст: {}'
+		.format(name, sex, age), reply_markup=keyboard1)
 	bot.register_next_step_handler(message, get_menu)
 
 
@@ -93,7 +94,7 @@ def get_choice(message):
 	elif choiceToChange == u'Изменить возраст' :
 			try:
 				if age != int(message.text):
-					return None
+					age = int(message.text)
 				else:
 					bot.send_message(message.from_user.id, 'Не повторять!')
 					return bot.register_next_step_handler(message, get_choice)
