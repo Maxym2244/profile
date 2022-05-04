@@ -4,8 +4,7 @@ import types
 bot = telebot.TeleBot('1024136960:AAFt2cCEF1zWlaTMe3lymbzqk-mmvJWxlQ0')
 name = ''
 sex = ''
-choiceToChange = ''
-
+choiceToChange = ' '
 
 @bot.message_handler(commands=['start'])
 
